@@ -209,15 +209,14 @@ function construirPDF() {
     const doc = new jsPDF('p', 'mm', 'a4');
     const getVal = id => document.getElementById(id).value.toUpperCase() || '.......................';
     
-    // Interlineado 1.5 en jsPDF (1.5 multiplicado por el alto estándar de línea)
+    // Interlineado 1.5
     const factorInterlineado = 1.5;
     const altoLineaBase = 3.5; 
     const altoLinea15 = altoLineaBase * factorInterlineado; // 5.25mm
     
+    const salto2 = altoLinea15 * 2; // 2 saltos de línea (~10.5mm)
     const salto3 = altoLinea15 * 3; // 3 saltos de línea (~15.75mm)
-    const salto5 = altoLinea15 * 5; // 5 saltos de línea (~26.25mm)
 
-    // Configuración general de fuente
     doc.setFontSize(10);
     doc.setLineHeightFactor(factorInterlineado);
 
@@ -225,8 +224,8 @@ function construirPDF() {
     doc.setFont("helvetica", "bold");
     doc.text("CONTRATO DE COMPRAVENTA DE VEHÍCULO USADO ENTRE PARTICULARES", 105, 12, { align: "center" });
 
-    // 5 SALTOS DE LÍNEA TRAS EL TÍTULO
-    let y = 12 + salto5;
+    // 3 SALTOS DE LÍNEA TRAS EL TÍTULO
+    let y = 12 + salto3;
 
     // Lugar y fecha
     doc.setFont("helvetica", "normal");
@@ -241,8 +240,8 @@ function construirPDF() {
     }
     doc.text(`En ${getVal('c_lugar')} a ${dia} de ${mes} de ${fechaTxt}`, 14, y); 
     
-    // VENDEDOR (3 saltos)
-    y += salto3;
+    // VENDEDOR (2 saltos de línea)
+    y += salto2;
     doc.setFont("helvetica", "bold"); 
     doc.text("Vendedor:", 14, y); 
     doc.line(14, y + 0.5, 31, y + 0.5); 
@@ -253,8 +252,8 @@ function construirPDF() {
     doc.text(lVen, 14, y);
     y += (lVen.length * altoLinea15);
 
-    // COMPRADOR (3 saltos)
-    y += salto3;
+    // COMPRADOR (2 saltos de línea)
+    y += salto2;
     doc.setFont("helvetica", "bold"); 
     doc.text("Comprador:", 14, y); 
     doc.line(14, y + 0.5, 33, y + 0.5); 
@@ -265,8 +264,8 @@ function construirPDF() {
     doc.text(lCom, 14, y);
     y += (lCom.length * altoLinea15);
 
-    // VEHÍCULO (3 saltos)
-    y += salto3;
+    // VEHÍCULO (2 saltos de línea)
+    y += salto2;
     doc.setFont("helvetica", "bold"); 
     doc.text("Vehículo:", 105, y, { align: "center" }); 
     doc.line(97, y + 0.5, 113, y + 0.5); 
@@ -276,8 +275,8 @@ function construirPDF() {
     y += altoLinea15;
     doc.text(`Nº de Bastidor: ${getVal('v_bastidor')}               Kilómetros: ${getVal('v_kms')}`, 14, y); 
 
-    // INTRODUCCIÓN Y CONDICIONES (3 saltos)
-    y += salto3;
+    // INTRODUCCIÓN Y CONDICIONES (2 saltos de línea)
+    y += salto2;
     const intro = "Reunidos vendedor y comprador en la fecha del encabezamiento, manifiestan haber acordado formalizar en este documento CONTRATO DE COMPRAVENTA del vehículo que se especifica, en las siguientes :";
     let lIntro = doc.splitTextToSize(intro, 180);
     doc.text(lIntro, 14, y); 
@@ -300,11 +299,11 @@ function construirPDF() {
     [c1, c2, c3, c4, c5, c6, cierre].forEach(text => {
         let lines = doc.splitTextToSize(text, 180);
         doc.text(lines, 14, y);
-        y += (lines.length * altoLinea15) + 2;
+        y += (lines.length * altoLinea15) + 1.5;
     });
 
-    // FIRMAS (3 saltos)
-    y += salto3;
+    // FIRMAS (2 saltos de línea)
+    y += salto2;
     const canvasVen = document.getElementById('canvasVendedor');
     const canvasCom = document.getElementById('canvasComprador');
 
