@@ -58,7 +58,7 @@
         font-size: 1.1rem;
     }
 
-    /* text-transform hace que el usuario vea lo que escribe en mayúsculas */
+    /* Fuerza visual y text-transform */
     input[type="text"],
     textarea {
         width: 100%;
@@ -129,69 +129,70 @@
     </div>
 
     <form id="formTaller">
+        <!-- Se añade oninput="this.value = this.value.toUpperCase()" en cada campo -->
         <div class="form-group">
             <label for="nombres">Nombres:</label>
-            <input type="text" id="nombres" name="nombres">
+            <input type="text" id="nombres" name="nombres" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="apellidos">Apellidos:</label>
-            <input type="text" id="apellidos" name="apellidos">
+            <input type="text" id="apellidos" name="apellidos" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="cif">DNI/CIF:</label>
-            <input type="text" id="cif" name="cif">
+            <input type="text" id="cif" name="cif" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="dir">Dirección:</label>
-            <input type="text" id="dir" name="dir">
+            <input type="text" id="dir" name="dir" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="ciudad">Ciudad:</label>
-            <input type="text" id="ciudad" name="ciudad">
+            <input type="text" id="ciudad" name="ciudad" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="cp">Código Postal:</label>
-            <input type="text" id="cp" name="cp">
+            <input type="text" id="cp" name="cp" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="provincia">Provincia:</label>
-            <input type="text" id="provincia" name="provincia">
+            <input type="text" id="provincia" name="provincia" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="telefono">Teléfono:</label>
-            <input type="text" id="telefono" name="telefono">
+            <input type="text" id="telefono" name="telefono" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="email">Email:</label>
-            <input type="text" id="email" name="email">
+            <input type="text" id="email" name="email" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="matricula">Matrícula:</label>
-            <input type="text" id="matricula" name="matricula">
+            <input type="text" id="matricula" name="matricula" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="marca">Marca:</label>
-            <input type="text" id="marca" name="marca">
+            <input type="text" id="marca" name="marca" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="modelo">Modelo:</label>
-            <input type="text" id="modelo" name="modelo">
+            <input type="text" id="modelo" name="modelo" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="averia">Avería que presenta:</label>
-            <textarea id="averia" name="averia" rows="4"></textarea>
+            <textarea id="averia" name="averia" rows="4" oninput="this.value = this.value.toUpperCase()"></textarea>
         </div>
 
         <div class="checkbox-container">
@@ -207,8 +208,10 @@
 
 <script>
 function getValue(id) {
-    // .toUpperCase() asegura que el valor extraído esté siempre en mayúsculas
-    return document.getElementById(id) ? document.getElementById(id).value.trim().toUpperCase() : '';
+    var elem = document.getElementById(id);
+    if (!elem) return '';
+    // Forzamos la conversión directa sobre el valor String
+    return String(elem.value).toUpperCase().trim();
 }
 
 function enviarWhatsApp() {
@@ -230,7 +233,6 @@ function enviarWhatsApp() {
     
     var esAutorizado = document.getElementById('checkboxAutorizo').checked ? 'SI' : 'NO';
 
-    // Formato normal para etiquetas y texto legal, mayúsculas únicamente en los datos introducidos
     var texto = "*Nombres:* " + nombres + "\n" +
         "*Apellidos:* " + apellidos + "\n" +
         "*DNI-CIF:* " + cif + "\n" +
