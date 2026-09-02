@@ -13,9 +13,8 @@
     .cabecera { border: 2px solid #1a365d; color: #1a365d; text-align: center; padding: 15px 10px; border-radius: 8px; margin-bottom: 25px; }
     .cabecera h2 { font-size: 1.15rem; line-height: 1.3; text-transform: uppercase; }
     
-    /* Espaciado mayor entre secciones */
     .seccion-block {
-        margin-bottom: 28px;
+        margin-bottom: 25px;
         background: #fafafa;
         padding: 12px;
         border-radius: 8px;
@@ -26,7 +25,7 @@
         background: #e2e8f0; 
         padding: 10px 12px; 
         font-weight: bold; 
-        margin-bottom: 16px; 
+        margin-bottom: 14px; 
         border-left: 4px solid #1a365d; 
         text-transform: uppercase; 
         font-size: 0.88rem; 
@@ -35,31 +34,27 @@
         border-radius: 0 4px 4px 0;
     }
     
-    /* Espaciado entre campos individuales */
-    .form-group { margin-bottom: 14px; }
-    label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.85rem; color: #4a5568; }
+    .form-group { margin-bottom: 12px; }
+    label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 0.85rem; color: #4a5568; }
     
     input[type="text"], input[type="date"], input[type="number"] {
         width: 100%; padding: 12px; font-size: 0.95rem; border: 1px solid #cbd5e0; border-radius: 6px; text-transform: uppercase; background-color: #fff;
     }
     input:focus { border-color: #3182ce; outline: none; box-shadow: 0 0 0 2px rgba(49,130,206,0.2); }
     
-    /* Layout Adaptable */
-    .grid-2, .grid-3 { display: grid; gap: 12px; grid-template-columns: 1fr; }
+    .grid-2, .grid-3 { display: grid; gap: 10px; grid-template-columns: 1fr; }
     
     @media (min-width: 480px) {
         .grid-2 { grid-template-columns: 1fr 1fr; }
         .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
     }
     
-    /* Firma Digital Tactil */
-    .firma-label { margin-top: 15px; margin-bottom: 6px; }
+    .firma-label { margin-top: 12px; margin-bottom: 6px; }
     .firma-container { border: 2px dashed #cbd5e0; background: #fff; border-radius: 6px; text-align: center; margin-top: 5px; touch-action: none; }
-    canvas { width: 100%; height: 140px; background: #fff; cursor: crosshair; display: block; border-radius: 4px; }
+    canvas { width: 100%; height: 130px; background: #fff; cursor: crosshair; display: block; border-radius: 4px; }
     .btn-clear { background: #e53e3e; color: white; border: none; padding: 8px 14px; margin: 8px; border-radius: 4px; cursor: pointer; font-size: 0.78rem; font-weight: bold; }
     
-    /* Botones principales */
-    .btn-group { display: flex; flex-direction: column; gap: 12px; margin-top: 30px; margin-bottom: 10px; }
+    .btn-group { display: flex; flex-direction: column; gap: 12px; margin-top: 25px; margin-bottom: 10px; }
     .btn { width: 100%; padding: 16px; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: bold; text-transform: uppercase; }
     .btn-pdf { background-color: #2b6cb0; color: white; }
     .btn-ws { background-color: #25D366; color: white; }
@@ -215,11 +210,11 @@ function construirPDF() {
     const getVal = id => document.getElementById(id).value.toUpperCase() || '.......................';
     
     // Título PDF
-    doc.setFontSize(11);
+    doc.setFontSize(10.5);
     doc.setFont("helvetica", "bold");
-    doc.text("CONTRATO DE COMPRAVENTA DE VEHÍCULO USADO ENTRE PARTICULARES", 105, 15, { align: "center" });
+    doc.text("CONTRATO DE COMPRAVENTA DE VEHÍCULO USADO ENTRE PARTICULARES", 105, 14, { align: "center" });
 
-    doc.setFontSize(9);
+    doc.setFontSize(8.5);
     doc.setFont("helvetica", "normal");
     
     let fVal = document.getElementById('c_fecha').value;
@@ -232,29 +227,50 @@ function construirPDF() {
         fechaTxt = d.getFullYear();
     }
     
-    let y = 23;
-    doc.text(`En ${getVal('c_lugar')} a ${dia} de ${mes} de ${fechaTxt}`, 14, y); y += 6;
-
+    let y = 22;
+    doc.text(`En ${getVal('c_lugar')} a ${dia} de ${mes} de ${fechaTxt}`, 14, y); 
+    
     // Vendedor
-    doc.setFont("helvetica", "bold"); doc.text("Vendedor:", 14, y); doc.setFont("helvetica", "normal"); y += 5;
-    doc.text(`D./D.ª ${getVal('ven_nombre')}, con N.I.F. nº ${getVal('ven_dni')}, domicilio en ${getVal('ven_pob')}, provincia de ${getVal('ven_prov')}, calle ${getVal('ven_calle')}, número ${getVal('ven_num')}, puerta ${getVal('ven_puerta')} y C.P. ${getVal('ven_cp')}.`, 14, y, { maxWidth: 180 });
-    y += 11;
+    y += 7;
+    doc.setFont("helvetica", "bold"); 
+    doc.text("Vendedor:", 14, y); 
+    y += 4;
+    doc.setFont("helvetica", "normal");
+    const txtVen = `D./D.ª ${getVal('ven_nombre')}, con N.I.F. nº ${getVal('ven_dni')}, domicilio en ${getVal('ven_pob')}, provincia de ${getVal('ven_prov')}, calle ${getVal('ven_calle')}, número ${getVal('ven_num')}, puerta ${getVal('ven_puerta')} y C.P. ${getVal('ven_cp')}.`;
+    let lVen = doc.splitTextToSize(txtVen, 180);
+    doc.text(lVen, 14, y);
+    y += (lVen.length * 3.8) + 3; // Espaciado adaptativo
 
     // Comprador
-    doc.setFont("helvetica", "bold"); doc.text("Comprador:", 14, y); doc.setFont("helvetica", "normal"); y += 5;
-    doc.text(`D./D.ª ${getVal('com_nombre')}, con N.I.F. nº ${getVal('com_dni')}, domicilio en ${getVal('com_pob')}, provincia de ${getVal('com_prov')}, calle ${getVal('com_calle')}, número ${getVal('com_num')}, puerta ${getVal('com_puerta')} y C.P. ${getVal('com_cp')}.`, 14, y, { maxWidth: 180 });
-    y += 11;
+    doc.setFont("helvetica", "bold"); 
+    doc.text("Comprador:", 14, y); 
+    y += 4;
+    doc.setFont("helvetica", "normal");
+    const txtCom = `D./D.ª ${getVal('com_nombre')}, con N.I.F. nº ${getVal('com_dni')}, domicilio en ${getVal('com_pob')}, provincia de ${getVal('com_prov')}, calle ${getVal('com_calle')}, número ${getVal('com_num')}, puerta ${getVal('com_puerta')} y C.P. ${getVal('com_cp')}.`;
+    let lCom = doc.splitTextToSize(txtCom, 180);
+    doc.text(lCom, 14, y);
+    y += (lCom.length * 3.8) + 3; // Espaciado adaptativo
 
     // Vehículo
-    doc.setFont("helvetica", "bold"); doc.text("Vehículo:", 14, y); doc.setFont("helvetica", "normal"); y += 5;
-    doc.text(`Marca: ${getVal('v_marca')}    Modelo: ${getVal('v_modelo')}    Matrícula: ${getVal('v_matricula')}`, 14, y); y += 5;
-    doc.text(`Nº de Bastidor: ${getVal('v_bastidor')}    Kilómetros: ${getVal('v_kms')}`, 14, y); y += 8;
+    doc.setFont("helvetica", "bold"); 
+    doc.text("Vehículo:", 14, y); 
+    y += 4;
+    doc.setFont("helvetica", "normal");
+    doc.text(`Marca: ${getVal('v_marca')}          Modelo: ${getVal('v_modelo')}          Matrícula: ${getVal('v_matricula')}`, 14, y); 
+    y += 4.5;
+    doc.text(`Nº de Bastidor: ${getVal('v_bastidor')}          Kilómetros: ${getVal('v_kms')}`, 14, y); 
+    y += 7;
 
+    // Párrafo introductorio
     const intro = "Reunidos vendedor y comprador en la fecha del encabezamiento, manifiestan haber acordado formalizar en este documento CONTRATO DE COMPRAVENTA del vehículo que se especifica, en las siguientes :";
-    doc.text(doc.splitTextToSize(intro, 180), 14, y); y += 10;
+    let lIntro = doc.splitTextToSize(intro, 180);
+    doc.text(lIntro, 14, y); 
+    y += (lIntro.length * 3.8) + 4;
 
+    // Encabezado Condiciones
     doc.setFont("helvetica", "bold");
-    doc.text("CONDICIONES", 105, y, { align: "center" }); y += 6;
+    doc.text("CONDICIONES", 105, y, { align: "center" }); 
+    y += 5;
 
     // Cláusulas
     const c1 = `Primera.- El vendedor vende al comprador el vehículo de su propiedad anteriormente especificado por la cantidad de ${getVal('v_precio')} euros, sin incluir los impuestos correspondientes, que serán a cargo del comprador. La forma de pago será ${getVal('v_pago')}.`;
@@ -269,11 +285,11 @@ function construirPDF() {
     [c1, c2, c3, c4, c5, c6, cierre].forEach(text => {
         let lines = doc.splitTextToSize(text, 180);
         doc.text(lines, 14, y);
-        y += (lines.length * 3.8) + 2;
+        y += (lines.length * 3.6) + 2.5; // Espacio uniforme entre cláusulas
     });
 
     // Firmas
-    y += 4;
+    y += 6;
     const canvasVen = document.getElementById('canvasVendedor');
     const canvasCom = document.getElementById('canvasComprador');
 
