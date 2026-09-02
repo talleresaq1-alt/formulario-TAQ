@@ -209,12 +209,12 @@ function construirPDF() {
     const doc = new jsPDF('p', 'mm', 'a4');
     const getVal = id => document.getElementById(id).value.toUpperCase() || '.......................';
     
-    // Título PDF
-    doc.setFontSize(10.5);
+    // Título PDF principal
+    doc.setFontSize(10);
     doc.setFont("helvetica", "bold");
-    doc.text("CONTRATO DE COMPRAVENTA DE VEHÍCULO USADO ENTRE PARTICULARES", 105, 14, { align: "center" });
+    doc.text("CONTRATO DE COMPRAVENTA DE VEHÍCULO USADO ENTRE PARTICULARES", 105, 12, { align: "center" });
+    doc.line(14, 13, 196, 13); // Subrayado del título principal
 
-    doc.setFontSize(8.5);
     doc.setFont("helvetica", "normal");
     
     let fVal = document.getElementById('c_fecha').value;
@@ -227,45 +227,48 @@ function construirPDF() {
         fechaTxt = d.getFullYear();
     }
     
-    let y = 22;
+    let y = 19;
     doc.text(`En ${getVal('c_lugar')} a ${dia} de ${mes} de ${fechaTxt}`, 14, y); 
     
     // Vendedor
-    y += 7;
+    y += 6;
     doc.setFont("helvetica", "bold"); 
     doc.text("Vendedor:", 14, y); 
-    y += 4;
+    doc.line(14, y + 0.5, 31, y + 0.5); // Subrayado Vendedor
+    y += 5;
     doc.setFont("helvetica", "normal");
     const txtVen = `D./D.ª ${getVal('ven_nombre')}, con N.I.F. nº ${getVal('ven_dni')}, domicilio en ${getVal('ven_pob')}, provincia de ${getVal('ven_prov')}, calle ${getVal('ven_calle')}, número ${getVal('ven_num')}, puerta ${getVal('ven_puerta')} y C.P. ${getVal('ven_cp')}.`;
     let lVen = doc.splitTextToSize(txtVen, 180);
     doc.text(lVen, 14, y);
-    y += (lVen.length * 3.8) + 3; // Espaciado adaptativo
+    y += (lVen.length * 4) + 2;
 
     // Comprador
     doc.setFont("helvetica", "bold"); 
     doc.text("Comprador:", 14, y); 
-    y += 4;
+    doc.line(14, y + 0.5, 33, y + 0.5); // Subrayado Comprador
+    y += 5;
     doc.setFont("helvetica", "normal");
     const txtCom = `D./D.ª ${getVal('com_nombre')}, con N.I.F. nº ${getVal('com_dni')}, domicilio en ${getVal('com_pob')}, provincia de ${getVal('com_prov')}, calle ${getVal('com_calle')}, número ${getVal('com_num')}, puerta ${getVal('com_puerta')} y C.P. ${getVal('com_cp')}.`;
     let lCom = doc.splitTextToSize(txtCom, 180);
     doc.text(lCom, 14, y);
-    y += (lCom.length * 3.8) + 3; // Espaciado adaptativo
+    y += (lCom.length * 4) + 2;
 
     // Vehículo
     doc.setFont("helvetica", "bold"); 
-    doc.text("Vehículo:", 14, y); 
-    y += 4;
+    doc.text("Vehículo:", 105, y, { align: "center" }); 
+    doc.line(97, y + 0.5, 113, y + 0.5); // Subrayado Vehículo
+    y += 5;
     doc.setFont("helvetica", "normal");
-    doc.text(`Marca: ${getVal('v_marca')}          Modelo: ${getVal('v_modelo')}          Matrícula: ${getVal('v_matricula')}`, 14, y); 
+    doc.text(`Marca: ${getVal('v_marca')}               Modelo: ${getVal('v_modelo')}               Matrícula: ${getVal('v_matricula')}`, 14, y); 
     y += 4.5;
-    doc.text(`Nº de Bastidor: ${getVal('v_bastidor')}          Kilómetros: ${getVal('v_kms')}`, 14, y); 
-    y += 7;
+    doc.text(`Nº de Bastidor: ${getVal('v_bastidor')}               Kilómetros: ${getVal('v_kms')}`, 14, y); 
+    y += 6;
 
-    // Párrafo introductorio
+    // Introducción
     const intro = "Reunidos vendedor y comprador en la fecha del encabezamiento, manifiestan haber acordado formalizar en este documento CONTRATO DE COMPRAVENTA del vehículo que se especifica, en las siguientes :";
     let lIntro = doc.splitTextToSize(intro, 180);
     doc.text(lIntro, 14, y); 
-    y += (lIntro.length * 3.8) + 4;
+    y += (lIntro.length * 4) + 2;
 
     // Encabezado Condiciones
     doc.setFont("helvetica", "bold");
@@ -285,20 +288,20 @@ function construirPDF() {
     [c1, c2, c3, c4, c5, c6, cierre].forEach(text => {
         let lines = doc.splitTextToSize(text, 180);
         doc.text(lines, 14, y);
-        y += (lines.length * 3.6) + 2.5; // Espacio uniforme entre cláusulas
+        y += (lines.length * 3.8) + 1.8;
     });
 
-    // Firmas
+    // Firmas al pie de página
     y += 6;
     const canvasVen = document.getElementById('canvasVendedor');
     const canvasCom = document.getElementById('canvasComprador');
 
-    doc.setFont("helvetica", "bold");
-    doc.text("Firma del vendedor.", 30, y);
+    doc.setFont("helvetica", "normal");
+    doc.text("Firma del vendedor.", 20, y);
     doc.text("Firma del comprador", 120, y);
     y += 2;
 
-    doc.addImage(canvasVen.toDataURL('image/png'), 'PNG', 25, y, 50, 18);
+    doc.addImage(canvasVen.toDataURL('image/png'), 'PNG', 15, y, 50, 18);
     doc.addImage(canvasCom.toDataURL('image/png'), 'PNG', 115, y, 50, 18);
 
     return doc;
