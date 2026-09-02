@@ -7,37 +7,60 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f0f2f5; color: #1c1e21; padding: 10px; }
-    .container { max-width: 650px; margin: 0 auto; background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    .cabecera { border: 2px solid #1a365d; color: #1a365d; text-align: center; padding: 12px 8px; border-radius: 8px; margin-bottom: 15px; }
-    .cabecera h2 { font-size: 1.1rem; line-height: 1.3; text-transform: uppercase; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f0f2f5; color: #1c1e21; padding: 15px 10px; }
+    .container { max-width: 650px; margin: 0 auto; background: #fff; padding: 20px 15px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
     
-    .seccion-titulo { background: #e2e8f0; padding: 8px 10px; font-weight: bold; margin: 15px 0 10px 0; border-left: 4px solid #1a365d; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px; }
+    .cabecera { border: 2px solid #1a365d; color: #1a365d; text-align: center; padding: 15px 10px; border-radius: 8px; margin-bottom: 25px; }
+    .cabecera h2 { font-size: 1.15rem; line-height: 1.3; text-transform: uppercase; }
     
-    .form-group { margin-bottom: 10px; }
-    label { display: block; font-weight: 600; margin-bottom: 4px; font-size: 0.82rem; color: #4a5568; }
+    /* Espaciado mayor entre secciones */
+    .seccion-block {
+        margin-bottom: 28px;
+        background: #fafafa;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #edf2f7;
+    }
+
+    .seccion-titulo { 
+        background: #e2e8f0; 
+        padding: 10px 12px; 
+        font-weight: bold; 
+        margin-bottom: 16px; 
+        border-left: 4px solid #1a365d; 
+        text-transform: uppercase; 
+        font-size: 0.88rem; 
+        letter-spacing: 0.5px; 
+        color: #1a202c;
+        border-radius: 0 4px 4px 0;
+    }
+    
+    /* Espaciado entre campos individuales */
+    .form-group { margin-bottom: 14px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.85rem; color: #4a5568; }
+    
     input[type="text"], input[type="date"], input[type="number"] {
-        width: 100%; padding: 10px 12px; font-size: 0.95rem; border: 1px solid #cbd5e0; border-radius: 6px; text-transform: uppercase; background-color: #fff;
+        width: 100%; padding: 12px; font-size: 0.95rem; border: 1px solid #cbd5e0; border-radius: 6px; text-transform: uppercase; background-color: #fff;
     }
     input:focus { border-color: #3182ce; outline: none; box-shadow: 0 0 0 2px rgba(49,130,206,0.2); }
     
-    /* Layout Adaptable (Desktop: columnas / Móvil: 1 columna) */
-    .grid-2, .grid-3, .grid-4 { display: grid; gap: 8px; grid-template-columns: 1fr; }
+    /* Layout Adaptable */
+    .grid-2, .grid-3 { display: grid; gap: 12px; grid-template-columns: 1fr; }
     
     @media (min-width: 480px) {
         .grid-2 { grid-template-columns: 1fr 1fr; }
         .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
-        .grid-4 { grid-template-columns: 2fr 1fr 1fr 1fr; }
     }
     
     /* Firma Digital Tactil */
-    .firma-container { border: 2px dashed #cbd5e0; background: #f7fafc; border-radius: 6px; text-align: center; margin-top: 5px; touch-action: none; }
-    canvas { width: 100%; height: 130px; background: #fff; cursor: crosshair; display: block; border-radius: 4px; }
-    .btn-clear { background: #e53e3e; color: white; border: none; padding: 6px 12px; margin: 6px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: bold; }
+    .firma-label { margin-top: 15px; margin-bottom: 6px; }
+    .firma-container { border: 2px dashed #cbd5e0; background: #fff; border-radius: 6px; text-align: center; margin-top: 5px; touch-action: none; }
+    canvas { width: 100%; height: 140px; background: #fff; cursor: crosshair; display: block; border-radius: 4px; }
+    .btn-clear { background: #e53e3e; color: white; border: none; padding: 8px 14px; margin: 8px; border-radius: 4px; cursor: pointer; font-size: 0.78rem; font-weight: bold; }
     
     /* Botones principales */
-    .btn-group { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
-    .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: bold; text-transform: uppercase; transition: background 0.2s; }
+    .btn-group { display: flex; flex-direction: column; gap: 12px; margin-top: 30px; margin-bottom: 10px; }
+    .btn { width: 100%; padding: 16px; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: bold; text-transform: uppercase; }
     .btn-pdf { background-color: #2b6cb0; color: white; }
     .btn-ws { background-color: #25D366; color: white; }
 </style>
@@ -51,77 +74,87 @@
 
     <form id="formContrato">
         <!-- LUGAR Y FECHA -->
-        <div class="seccion-titulo">1. Lugar y Fecha</div>
-        <div class="grid-2">
-            <div class="form-group"><label>En (Población):</label><input type="text" id="c_lugar" oninput="up(this)"></div>
-            <div class="form-group"><label>Fecha:</label><input type="date" id="c_fecha"></div>
+        <div class="seccion-block">
+            <div class="seccion-titulo">1. Lugar y Fecha</div>
+            <div class="grid-2">
+                <div class="form-group"><label>En (Población):</label><input type="text" id="c_lugar" oninput="up(this)"></div>
+                <div class="form-group"><label>Fecha:</label><input type="date" id="c_fecha"></div>
+            </div>
         </div>
 
         <!-- VENDEDOR -->
-        <div class="seccion-titulo">2. Datos del Vendedor</div>
-        <div class="form-group"><label>Nombre y Apellidos (D./Dª):</label><input type="text" id="ven_nombre" oninput="up(this)"></div>
-        <div class="grid-2">
-            <div class="form-group"><label>N.I.F. nº:</label><input type="text" id="ven_dni" oninput="up(this)"></div>
-            <div class="form-group"><label>Domicilio en (Población):</label><input type="text" id="ven_pob" oninput="up(this)"></div>
-        </div>
-        <div class="grid-2">
-            <div class="form-group"><label>Provincia de:</label><input type="text" id="ven_prov" oninput="up(this)"></div>
-            <div class="form-group"><label>Calle / Avda:</label><input type="text" id="ven_calle" oninput="up(this)"></div>
-        </div>
-        <div class="grid-3">
-            <div class="form-group"><label>Número:</label><input type="text" id="ven_num" oninput="up(this)"></div>
-            <div class="form-group"><label>Puerta:</label><input type="text" id="ven_puerta" oninput="up(this)"></div>
-            <div class="form-group"><label>C.P.:</label><input type="text" id="ven_cp" oninput="up(this)"></div>
-        </div>
-        
-        <label>Firma del Vendedor:</label>
-        <div class="firma-container">
-            <canvas id="canvasVendedor"></canvas>
-            <button type="button" class="btn-clear" onclick="limpiarCanvas('canvasVendedor')">Borrar Firma</button>
+        <div class="seccion-block">
+            <div class="seccion-titulo">2. Datos del Vendedor</div>
+            <div class="form-group"><label>Nombre y Apellidos (D./Dª):</label><input type="text" id="ven_nombre" oninput="up(this)"></div>
+            <div class="grid-2">
+                <div class="form-group"><label>N.I.F. nº:</label><input type="text" id="ven_dni" oninput="up(this)"></div>
+                <div class="form-group"><label>Domicilio en (Población):</label><input type="text" id="ven_pob" oninput="up(this)"></div>
+            </div>
+            <div class="grid-2">
+                <div class="form-group"><label>Provincia de:</label><input type="text" id="ven_prov" oninput="up(this)"></div>
+                <div class="form-group"><label>Calle / Avda:</label><input type="text" id="ven_calle" oninput="up(this)"></div>
+            </div>
+            <div class="grid-3">
+                <div class="form-group"><label>Número:</label><input type="text" id="ven_num" oninput="up(this)"></div>
+                <div class="form-group"><label>Puerta:</label><input type="text" id="ven_puerta" oninput="up(this)"></div>
+                <div class="form-group"><label>C.P.:</label><input type="text" id="ven_cp" oninput="up(this)"></div>
+            </div>
+            
+            <label class="firma-label">Firma del Vendedor:</label>
+            <div class="firma-container">
+                <canvas id="canvasVendedor"></canvas>
+                <button type="button" class="btn-clear" onclick="limpiarCanvas('canvasVendedor')">Borrar Firma</button>
+            </div>
         </div>
 
         <!-- COMPRADOR -->
-        <div class="seccion-titulo">3. Datos del Comprador</div>
-        <div class="form-group"><label>Nombre y Apellidos (D./Dª):</label><input type="text" id="com_nombre" oninput="up(this)"></div>
-        <div class="grid-2">
-            <div class="form-group"><label>N.I.F. nº:</label><input type="text" id="com_dni" oninput="up(this)"></div>
-            <div class="form-group"><label>Domicilio en (Población):</label><input type="text" id="com_pob" oninput="up(this)"></div>
-        </div>
-        <div class="grid-2">
-            <div class="form-group"><label>Provincia de:</label><input type="text" id="com_prov" oninput="up(this)"></div>
-            <div class="form-group"><label>Calle / Avda:</label><input type="text" id="com_calle" oninput="up(this)"></div>
-        </div>
-        <div class="grid-3">
-            <div class="form-group"><label>Número:</label><input type="text" id="com_num" oninput="up(this)"></div>
-            <div class="form-group"><label>Puerta:</label><input type="text" id="com_puerta" oninput="up(this)"></div>
-            <div class="form-group"><label>C.P.:</label><input type="text" id="com_cp" oninput="up(this)"></div>
-        </div>
+        <div class="seccion-block">
+            <div class="seccion-titulo">3. Datos del Comprador</div>
+            <div class="form-group"><label>Nombre y Apellidos (D./Dª):</label><input type="text" id="com_nombre" oninput="up(this)"></div>
+            <div class="grid-2">
+                <div class="form-group"><label>N.I.F. nº:</label><input type="text" id="com_dni" oninput="up(this)"></div>
+                <div class="form-group"><label>Domicilio en (Población):</label><input type="text" id="com_pob" oninput="up(this)"></div>
+            </div>
+            <div class="grid-2">
+                <div class="form-group"><label>Provincia de:</label><input type="text" id="com_prov" oninput="up(this)"></div>
+                <div class="form-group"><label>Calle / Avda:</label><input type="text" id="com_calle" oninput="up(this)"></div>
+            </div>
+            <div class="grid-3">
+                <div class="form-group"><label>Número:</label><input type="text" id="com_num" oninput="up(this)"></div>
+                <div class="form-group"><label>Puerta:</label><input type="text" id="com_puerta" oninput="up(this)"></div>
+                <div class="form-group"><label>C.P.:</label><input type="text" id="com_cp" oninput="up(this)"></div>
+            </div>
 
-        <label>Firma del Comprador:</label>
-        <div class="firma-container">
-            <canvas id="canvasComprador"></canvas>
-            <button type="button" class="btn-clear" onclick="limpiarCanvas('canvasComprador')">Borrar Firma</button>
+            <label class="firma-label">Firma del Comprador:</label>
+            <div class="firma-container">
+                <canvas id="canvasComprador"></canvas>
+                <button type="button" class="btn-clear" onclick="limpiarCanvas('canvasComprador')">Borrar Firma</button>
+            </div>
         </div>
 
         <!-- VEHÍCULO -->
-        <div class="seccion-titulo">4. Datos del Vehículo</div>
-        <div class="grid-3">
-            <div class="form-group"><label>Marca:</label><input type="text" id="v_marca" oninput="up(this)"></div>
-            <div class="form-group"><label>Modelo:</label><input type="text" id="v_modelo" oninput="up(this)"></div>
-            <div class="form-group"><label>Matrícula:</label><input type="text" id="v_matricula" oninput="up(this)"></div>
-        </div>
-        <div class="grid-2">
-            <div class="form-group"><label>Nº de Bastidor:</label><input type="text" id="v_bastidor" oninput="up(this)"></div>
-            <div class="form-group"><label>Kilómetros:</label><input type="number" id="v_kms"></div>
+        <div class="seccion-block">
+            <div class="seccion-titulo">4. Datos del Vehículo</div>
+            <div class="grid-3">
+                <div class="form-group"><label>Marca:</label><input type="text" id="v_marca" oninput="up(this)"></div>
+                <div class="form-group"><label>Modelo:</label><input type="text" id="v_modelo" oninput="up(this)"></div>
+                <div class="form-group"><label>Matrícula:</label><input type="text" id="v_matricula" oninput="up(this)"></div>
+            </div>
+            <div class="grid-2">
+                <div class="form-group"><label>Nº de Bastidor:</label><input type="text" id="v_bastidor" oninput="up(this)"></div>
+                <div class="form-group"><label>Kilómetros:</label><input type="number" id="v_kms"></div>
+            </div>
         </div>
 
         <!-- CONDICIONES ECONÓMICAS -->
-        <div class="seccion-titulo">5. Precio y Juzgados</div>
-        <div class="grid-2">
-            <div class="form-group"><label>Precio (€):</label><input type="number" id="v_precio"></div>
-            <div class="form-group"><label>Forma de pago:</label><input type="text" id="v_pago" placeholder="Ej: Efectivo / Transferencia" oninput="up(this)"></div>
+        <div class="seccion-block">
+            <div class="seccion-titulo">5. Precio y Juzgados</div>
+            <div class="grid-2">
+                <div class="form-group"><label>Precio (€):</label><input type="number" id="v_precio"></div>
+                <div class="form-group"><label>Forma de pago:</label><input type="text" id="v_pago" placeholder="Ej: Efectivo / Transferencia" oninput="up(this)"></div>
+            </div>
+            <div class="form-group"><label>Juzgados y Tribunales de:</label><input type="text" id="c_juzgados" oninput="up(this)"></div>
         </div>
-        <div class="form-group"><label>Juzgados y Tribunales de:</label><input type="text" id="c_juzgados" oninput="up(this)"></div>
 
         <div class="btn-group">
             <button type="button" class="btn btn-pdf" onclick="descargarPDF()">Descargar PDF</button>
@@ -181,7 +214,7 @@ function construirPDF() {
     const doc = new jsPDF('p', 'mm', 'a4');
     const getVal = id => document.getElementById(id).value.toUpperCase() || '.......................';
     
-    // Título
+    // Título PDF
     doc.setFontSize(11);
     doc.setFont("helvetica", "bold");
     doc.text("CONTRATO DE COMPRAVENTA DE VEHÍCULO USADO ENTRE PARTICULARES", 105, 15, { align: "center" });
@@ -223,7 +256,7 @@ function construirPDF() {
     doc.setFont("helvetica", "bold");
     doc.text("CONDICIONES", 105, y, { align: "center" }); y += 6;
 
-    // Cláusulas exactas de la imagen
+    // Cláusulas
     const c1 = `Primera.- El vendedor vende al comprador el vehículo de su propiedad anteriormente especificado por la cantidad de ${getVal('v_precio')} euros, sin incluir los impuestos correspondientes, que serán a cargo del comprador. La forma de pago será ${getVal('v_pago')}.`;
     const c2 = "Segunda.- El vendedor entrega materialmente al comprador la posesión del vehículo, haciéndose el adquirente cargo de cuantas responsabilidades puedan contraerse por la propiedad del vehículo, y su tenencia y uso a partir de dicho momento de la entrega.";
     const c3 = "Tercera.- El vendedor declara que no pesa sobre el vehículo ninguna carga, limitación de disposición, gravamen ni impuesto y sanción pendientes de abono en la fecha de la firma de este contrato, comprometiéndose en caso contrario a regularizar tal situación a su exclusivo cargo.";
