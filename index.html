@@ -58,8 +58,8 @@
         font-size: 1.1rem;
     }
 
-    /* Fuerza visual y text-transform */
     input[type="text"],
+    input[type="email"],
     textarea {
         width: 100%;
         padding: 12px;
@@ -67,10 +67,15 @@
         border: 1px solid #ccc;
         border-radius: 4px;
         background-color: #fff;
+    }
+
+    /* Solo para campos que deban visualizarse en mayúsculas */
+    .input-uppercase {
         text-transform: uppercase;
     }
 
     input[type="text"]:focus,
+    input[type="email"]:focus,
     textarea:focus {
         border-color: #4CAF50;
         outline: none;
@@ -129,70 +134,70 @@
     </div>
 
     <form id="formTaller">
-        <!-- Se añade oninput="this.value = this.value.toUpperCase()" en cada campo -->
         <div class="form-group">
             <label for="nombres">Nombres:</label>
-            <input type="text" id="nombres" name="nombres" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" id="nombres" name="nombres" class="input-uppercase" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="apellidos">Apellidos:</label>
-            <input type="text" id="apellidos" name="apellidos" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" id="apellidos" name="apellidos" class="input-uppercase" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="cif">DNI/CIF:</label>
-            <input type="text" id="cif" name="cif" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" id="cif" name="cif" class="input-uppercase" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="dir">Dirección:</label>
-            <input type="text" id="dir" name="dir" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" id="dir" name="dir" class="input-uppercase" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="ciudad">Ciudad:</label>
-            <input type="text" id="ciudad" name="ciudad" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" id="ciudad" name="ciudad" class="input-uppercase" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="cp">Código Postal:</label>
-            <input type="text" id="cp" name="cp" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" id="cp" name="cp" class="input-uppercase" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="provincia">Provincia:</label>
-            <input type="text" id="provincia" name="provincia" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" id="provincia" name="provincia" class="input-uppercase" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="telefono">Teléfono:</label>
-            <input type="text" id="telefono" name="telefono" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" id="telefono" name="telefono" class="input-uppercase" oninput="this.value = this.value.toUpperCase()">
         </div>
 
+        <!-- Campo Email modificado a tipo email, force a minúsculas y sin clase uppercase -->
         <div class="form-group">
             <label for="email">Email:</label>
-            <input type="text" id="email" name="email" oninput="this.value = this.value.toUpperCase()">
+            <input type="email" id="email" name="email" oninput="this.value = this.value.toLowerCase()">
         </div>
 
         <div class="form-group">
             <label for="matricula">Matrícula:</label>
-            <input type="text" id="matricula" name="matricula" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" id="matricula" name="matricula" class="input-uppercase" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="marca">Marca:</label>
-            <input type="text" id="marca" name="marca" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" id="marca" name="marca" class="input-uppercase" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="modelo">Modelo:</label>
-            <input type="text" id="modelo" name="modelo" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" id="modelo" name="modelo" class="input-uppercase" oninput="this.value = this.value.toUpperCase()">
         </div>
 
         <div class="form-group">
             <label for="averia">Avería que presenta:</label>
-            <textarea id="averia" name="averia" rows="4" oninput="this.value = this.value.toUpperCase()"></textarea>
+            <textarea id="averia" name="averia" rows="4" class="input-uppercase" oninput="this.value = this.value.toUpperCase()"></textarea>
         </div>
 
         <div class="checkbox-container">
@@ -207,29 +212,37 @@
 </div>
 
 <script>
-function getValue(id) {
+function getValueUpper(id) {
     var elem = document.getElementById(id);
     if (!elem) return '';
-    // Forzamos la conversión directa sobre el valor String
     return String(elem.value).toUpperCase().trim();
+}
+
+function getValueLower(id) {
+    var elem = document.getElementById(id);
+    if (!elem) return '';
+    return String(elem.value).toLowerCase().trim();
 }
 
 function enviarWhatsApp() {
     var telefonoTaller = '34650468076';
     
-    var nombres = getValue('nombres');
-    var apellidos = getValue('apellidos');
-    var cif = getValue('cif');
-    var dir = getValue('dir');
-    var cp = getValue('cp');
-    var ciudad = getValue('ciudad');
-    var provincia = getValue('provincia');
-    var telefono = getValue('telefono');
-    var email = getValue('email');
-    var matricula = getValue('matricula');
-    var marca = getValue('marca');
-    var modelo = getValue('modelo');
-    var averia = getValue('averia');
+    var nombres = getValueUpper('nombres');
+    var apellidos = getValueUpper('apellidos');
+    var cif = getValueUpper('cif');
+    var dir = getValueUpper('dir');
+    var cp = getValueUpper('cp');
+    var ciudad = getValueUpper('ciudad');
+    var provincia = getValueUpper('provincia');
+    var telefono = getValueUpper('telefono');
+    
+    // Extracción en minúsculas para el email
+    var email = getValueLower('email');
+    
+    var matricula = getValueUpper('matricula');
+    var marca = getValueUpper('marca');
+    var modelo = getValueUpper('modelo');
+    var averia = getValueUpper('averia');
     
     var esAutorizado = document.getElementById('checkboxAutorizo').checked ? 'SI' : 'NO';
 
