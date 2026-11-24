@@ -48,21 +48,43 @@
     }
 
     .form-group {
-        margin-bottom: 15px;
+        margin-bottom: 10px;
+    }
+
+    .section-heading {
+        margin: 18px 0 12px;
+        padding: 10px 12px;
+        border-left: 4px solid #F00;
+        background: #f7f7f7;
+        font-size: 1rem;
+        line-height: 1.35;
+    }
+
+    .field-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    @media (max-width: 420px) {
+        .field-row {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
     }
 
     label {
         display: block;
         font-weight: bold;
-        margin-bottom: 5px;
-        font-size: 1.1rem;
+        margin-bottom: 4px;
+        font-size: 1rem;
     }
 
     input[type="text"],
     input[type="email"],
     textarea {
         width: 100%;
-        padding: 12px;
+        padding: 10px;
         font-size: 1rem;
         border: 1px solid #ccc;
         border-radius: 4px;
@@ -200,6 +222,24 @@
             <textarea id="averia" name="averia" rows="4" class="input-uppercase" oninput="this.value = this.value.toUpperCase()"></textarea>
         </div>
 
+        <h2 class="section-heading">Persona que deja el vehículo y autoriza la reparación</h2>
+
+        <div class="form-group">
+            <label for="personaNombre">Nombre y apellidos:</label>
+            <input type="text" id="personaNombre" name="personaNombre" class="input-uppercase" oninput="this.value = this.value.toUpperCase()">
+        </div>
+
+        <div class="field-row">
+            <div class="form-group">
+                <label for="personaDni">DNI:</label>
+                <input type="text" id="personaDni" name="personaDni" class="input-uppercase" oninput="this.value = this.value.toUpperCase()">
+            </div>
+            <div class="form-group">
+                <label for="personaTelefono">Teléfono:</label>
+                <input type="text" id="personaTelefono" name="personaTelefono">
+            </div>
+        </div>
+
         <div class="checkbox-container">
             <input type="checkbox" id="checkboxAutorizo" value="SI" /> 
             <label for="checkboxAutorizo" class="checkbox-label">
@@ -243,6 +283,9 @@ function enviarWhatsApp() {
     var marca = getValueUpper('marca');
     var modelo = getValueUpper('modelo');
     var averia = getValueUpper('averia');
+    var personaNombre = getValueUpper('personaNombre');
+    var personaDni = getValueUpper('personaDni');
+    var personaTelefono = getValueUpper('personaTelefono');
     
     var esAutorizado = document.getElementById('checkboxAutorizo').checked ? 'SI' : 'NO';
 
@@ -259,7 +302,11 @@ function enviarWhatsApp() {
         "*Marca:* " + marca + "\n" +
         "*Modelo:* " + modelo + "\n" +
         "*Avería-Problema:* " + averia + "\n\n" +
-        "Yo " + nombres + " " + apellidos + " *" + esAutorizado + "* autorizo a Talleres AQ a verificar y hacer las pruebas pertinentes a mi vehículo. Así como también autorizo a circular con el vehículo, para realizar las pruebas que dicho trabajo requiera. Además acepto que *es obligatorio dejar la documentación* del coche y del *seguro* del mismo.";
+        "*Persona que deja el vehículo y autoriza la reparación:*\n" +
+        "*Nombre y apellidos:* " + personaNombre + "\n" +
+        "*DNI:* " + personaDni + "\n" +
+        "*Teléfono:* " + personaTelefono + "\n\n" +
+        "Yo " + (personaNombre || (nombres + " " + apellidos)) + " *" + esAutorizado + "* autorizo a Talleres AQ a verificar y hacer las pruebas pertinentes a mi vehículo. Así como también autorizo a circular con el vehículo, para realizar las pruebas que dicho trabajo requiera. Además acepto que *es obligatorio dejar la documentación* del coche y del *seguro* del mismo.";
 
     var url = "https://api.whatsapp.com/send?phone=" + telefonoTaller + "&text=" + encodeURIComponent(texto);
     
