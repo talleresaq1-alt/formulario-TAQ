@@ -449,6 +449,15 @@
 
         const nombre = document.getElementById('nombreCliente').value.trim();
         const matricula = document.getElementById('matricula').value.trim().toUpperCase();
+        const telefonoInput = document.getElementById('telefonoWhatsapp').value.replace(/\D/g, '');
+        const prefijo = document.getElementById('prefijoPais').value;
+        let telefono = telefonoInput;
+        if (telefono.startsWith('00')) telefono = telefono.substring(2);
+        if (telefono && !telefono.startsWith(prefijo)) telefono = prefijo + telefono;
+        if (!nombre || !matricula || !telefonoInput) {
+            showToast('Complete nombre, matrícula y teléfono', 'error');
+            return;
+        }
         const marcaModelo = document.getElementById('marcaModelo').value.trim().toUpperCase();
         const motivo = document.getElementById('motivoPersonalizado').value.trim().toUpperCase() || selectedService;
         const observaciones = document.getElementById('observaciones').value.trim().toUpperCase();
@@ -460,8 +469,9 @@
         const end = String(endDate.getFullYear()) + pad(endDate.getMonth() + 1) + pad(endDate.getDate()) +
             'T' + pad(endDate.getHours()) + pad(endDate.getMinutes()) + '00';
         const description = [
-            nombre ? 'Cliente: ' + nombre : '',
+            'Cliente: ' + nombre,
             'Matrícula: ' + matricula,
+            'Teléfono: +' + telefono,
             marcaModelo ? 'Vehículo: ' + marcaModelo : '',
             'Servicio: ' + motivo,
             observaciones ? 'Notas: ' + observaciones : ''
